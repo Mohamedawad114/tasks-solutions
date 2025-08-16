@@ -1,0 +1,19 @@
+{
+  "name": "mohamed-awad-mon-5---assignment-5-part-2--01016624425",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type":"module",
+  "scripts": {
+    "start":"node .",
+    "dev":"nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "nodemon": "^3.1.10"
+  }
+}

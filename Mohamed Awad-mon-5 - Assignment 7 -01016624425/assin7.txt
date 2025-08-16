@@ -1,0 +1,275 @@
+1##
+test> db.createCollection("Books", {
+...   validator: {
+...     $and: [
+...
+...       { title: { $ne: null } },
+...       { title: { $type: "string" } }
+...     ]
+...   }
+... });
+{ ok: 1 }
+###################################3
+2##
+test>  db.authors.insertOne({name:"Author1",nationality:"British"});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6876c37b7d27b77e91718dc4')
+}
+#######################################
+3##
+test> db.createCollection("logs",{capped:true,size:1048576});
+{ ok: 1 }
+############################################
+4##
+test> db.Books.createIndex({title:1});
+title_1
+######################################
+5##
+test> db.Books.insertOne({title:"book1",author:"ali",year:1937,genres:["fantasy","adventure"]});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6876c5147d27b77e91718dc5')
+}
+######################
+6##
+test> db.Books.insertMany([{title:"future",author:"george orweli",year:2020,geners:["science fiction"]},{title:"to kill yourself",author:"marper lee",year:1960,geners:["classic","fiction"]},{title:"brave new world",author:"ali qdous",year:2006,geners:["dystophin","sciencec fiction"]}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6876c7817d27b77e91718dc6'),
+    '1': ObjectId('6876c7817d27b77e91718dc7'),
+    '2': ObjectId('6876c7817d27b77e91718dc8')
+  }
+}
+########################################
+7##
+test> db.logs.insertOne({book_id:'6876c7817d27b77e91718dc6',action:"borrowed"});
+{
+  acknowledged: true,
+  insertedId: ObjectId('6876c7e07d27b77e91718dc9')
+}
+##################################
+8##
+test> db.Books.updateOne({title:"future"},{$set:{year:2022}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+############################
+9##
+test> db.Books.find({title:"brave new world"});
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006,
+    geners: [ 'dystophin', 'sciencec fiction' ]
+  }
+]
+###########################
+10##
+test> db.Books.find({year:{$gte:1990,$lte:2010}});
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006,
+    geners: [ 'dystophin', 'sciencec fiction' ]
+  }
+]
+###########################
+11##
+test> db.Books.find({geners:{$in:["science fiction"]}});
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc6'),
+    title: 'future',
+    author: 'george orweli',
+    year: 2022,
+    geners: [ 'science fiction' ]
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006,
+    geners: [ 'dystophin', 'science fiction' ]
+  }
+]
+#######################
+12##
+
+test> db.Books.find({}).sort({year:-1}).skip(1).limit(3);
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006,
+    geners: [ 'dystophin', 'science fiction' ]
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc7'),
+    title: 'to kill yourself',
+    author: 'marper lee',
+    year: 1960,
+    geners: [ 'classic', 'fiction' ]
+  },
+  {
+    _id: ObjectId('6876c5147d27b77e91718dc5'),
+    title: 'book1',
+    author: 'ali',
+    year: 1937,
+    genres: [ 'fantasy', 'adventure' ]
+  }
+]
+################################333
+13##
+test> db.Books.find({ year: { $type: "int" } });
+[
+  {
+    _id: ObjectId('6876c5147d27b77e91718dc5'),
+    title: 'book1',
+    author: 'ali',
+    year: 1937,
+    genres: [ 'fantasy', 'adventure' ]
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc6'),
+    title: 'future',
+    author: 'george orweli',
+    year: 2022,
+    geners: [ 'science fiction' ]
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc7'),
+    title: 'to kill yourself',
+    author: 'marper lee',
+    year: 1960,
+    geners: [ 'classic', 'fiction' ]
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006,
+    geners: [ 'dystophin', 'science fiction' ]
+  }
+]
+########################################################
+14##
+test> db.Books.find({geners:{$nin:["horror","science fiction"]}});
+[
+  {
+    _id: ObjectId('6876c5147d27b77e91718dc5'),
+    title: 'book1',
+    author: 'ali',
+    year: 1937,
+    genres: [ 'fantasy', 'adventure' ]
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc7'),
+    title: 'to kill yourself',
+    author: 'marper lee',
+    year: 1960,
+    geners: [ 'classic', 'fiction' ]
+  }
+]
+]
+###############################
+15##
+test> db.Books.deleteMany({year:{$lt:2000}});
+{ acknowledged: true, deletedCount: 2 }
+#######################
+16##
+test> db.Books.aggregate([{$match:{year:{$gt:2000}}},{$sort:{year:-1}}]);
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc6'),
+    title: 'future',
+    author: 'george orweli',
+    year: 2022,
+    geners: [ 'science fiction' ]
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006,
+    geners: [ 'dystophin', 'science fiction' ]
+  }
+]
+##################################
+17##
+]
+ db.Books.aggregate([{$match:{year:{$gt:2000}}},{$project:{title:1,year:1,author:1}}]);
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc6'),
+    title: 'future',
+    author: 'george orweli',
+    year: 2022
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006
+  }
+]
+#######################################
+18##
+test> db.Books.aggregate([{$unwind:"$geners"},{$project:{title:1,geners:1}}]);
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc6'),
+    title: 'future',
+    geners: 'science fiction'
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    geners: 'dystophin'
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    geners: 'science fiction'
+  }
+]
+######################################
+19##
+
+test> db.Books.aggregate([{
+...   $lookup: {
+...     from: "logs",
+...     localField: "_id",
+...     foreignField: "book_id",
+...     as: "booklogs"
+...   }
+... }]);
+[
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc6'),
+    title: 'future',
+    author: 'george orweli',
+    year: 2022,
+    geners: [ 'science fiction' ],
+    booklogs: []
+  },
+  {
+    _id: ObjectId('6876c7817d27b77e91718dc8'),
+    title: 'brave new world',
+    author: 'ali qdous',
+    year: 2006,
+    geners: [ 'dystophin', 'science fiction' ],
+    booklogs: []
+  }
+]
+#####################################

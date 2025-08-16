@@ -1,0 +1,21 @@
+{
+  "name": "mohamed-awad-mon-5---assignment-4--01016624425",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "start:div": "nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "global": "^4.4.0",
+    "pnpm": "^10.11.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
