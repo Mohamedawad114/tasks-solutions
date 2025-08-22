@@ -1,0 +1,33 @@
+{
+  "name": "mohamed-awad-mon-5---assignment-11--01016624425",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.7.0",
+    "dayjs": "^1.11.13",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "hpp": "^0.2.3",
+    "ioredis": "^5.7.0",
+    "joi": "^18.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.18.0",
+    "mongoose": "^8.17.2",
+    "multer": "^2.0.2",
+    "nanoid": "^5.1.5",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.5",
+    "nodemon": "^3.1.10",
+    "uuid": "^11.1.0"
+  }
+}
