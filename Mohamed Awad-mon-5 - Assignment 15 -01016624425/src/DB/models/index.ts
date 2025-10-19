@@ -1,0 +1,6 @@
+export * from './User.model'
+export * from './Post.model'
+export * from './comment.model'
+export * from './friendship.model'
+export * from './conversation.model'
+export * from './message.model'

@@ -1,0 +1,7 @@
+export * from './user.repository'
+export * from './Base.repository'
+export * from './Post.repository'
+export * from './comment.repository'
+export * from './friendship.repository'
+export * from './conversation.repository'
+export * from './message.repository'
